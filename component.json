@@ -1,0 +1,19 @@
+{
+  "name": "wysiwyg",
+  "repo": "adamsanderson/wysiwyg",
+  "description": "wysiwyg editor commands",
+  "version": "0.0.1",
+  "keywords": [
+    "wysiwyg",
+    "editor",
+    "contenteditable"
+  ],
+  "dependencies": {},
+  "development": {
+    "component/event": "*"
+  },
+  "license": "MIT",
+  "scripts": [
+    "index.js"
+  ]
+}

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+  	<meta charset="utf-8">
+  	<title>WYSIWYG</title>
+  	
+  	<meta name="author" content="Adam Sanderson">
+  	<link rel="stylesheet" href="build/build.css" type="text/css" media="screen" charset="utf-8">
+    <style type="text/css" media="screen">
+      body {
+        padding: 20px;
+        font-family: sans-serif;
+        background: white;
+      }
+      
+      footer {
+        position: fixed;
+        bottom: 20px;
+        background: white;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>WYSIWYG</h1>
+    <nav id='toolbar'>
+      
+    </nav>
+    <p id='content' contenteditable="true">This is a demo of the WYSIWYG commands.
+Select some of this text and try the commands out.
+    </p>
+    <footer>
+      See the <a href='https://github.com/adamsanderson/wysiwyg/'>GitHub repository</a> for more information.
+    </footer>
+    <script src="build/build.js" type="text/javascript" charset="utf-8"></script>
+    <script>
+      var wysiwyg = require('wysiwyg');
+      var events  = require('component-event');
+      
+      var toolbar = document.getElementById('toolbar');
+      var ignore  = {html: true, img: true};
+      
+      for (var name in wysiwyg.commands){
+        if (!ignore[name]){
+          toolbar.appendChild(makeCommandButton(name));
+        }
+      }
+      
+      function makeCommandButton(name){
+        var command = wysiwyg.commands[name];
+        var button = document.createElement("button");
+        
+        button.innerText = name;
+        events.bind(button, "click", function(){
+          wysiwyg.commands[name]();
+        });
+        
+        return button;
+      }
+      
+    </script>
+  </body>
+</html>
