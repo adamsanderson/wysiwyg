@@ -105,20 +105,19 @@ function getRangeStartElement(){
   
   if (document.getSelection){
     selection = document.getSelection();
-    if (!selection.rangeCount) return null;
-    
-    node = selection.getRangeAt(0).startContainer;
-    
-    if (node.nodeType == 1){
-      return node;
+    if (selection.rangeCount){
+      node = selection.getRangeAt(0).startContainer;
     } else {
-      return node.parentElement;
+      node = document.body;
     }
-    
   } else {
-    range = document.selection.createRange();
-    // TODO: this is required to support IE8.
-    return null;
+    node = document.selection.createRange().parentElement();
+  }
+  
+  if (node.nodeType == 1){
+    return node;
+  } else {
+    return node.parentElement;
   }
 }
 
