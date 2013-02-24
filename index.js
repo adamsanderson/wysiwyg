@@ -62,8 +62,9 @@ function makeCommand(command, param){
 function makeQuery(command){
   return function(){
     var value = document.queryCommandValue(command);
-    // Possible return values are the strings: "true", "false", and ""
-    return value === "true";
+    // Webkit/Firefox return values are the strings: "true", "false", and ""
+    // IE returns booleans
+    return value === "true" || value === true;
   }
 }
 
@@ -82,11 +83,19 @@ function checkParent(name){
 }
 
 function getBlockParent(el){
-  var display = window.getComputedStyle(el).display;
+  var display = getStyle(el).display;
   if (display == "block" || display == "table"){
     return el;
   } else {
     return getBlockParent(el.parentElement);
+  }
+}
+
+function getStyle(el){
+  if (window.getComputedStyle) {
+    return window.getComputedStyle(el);
+  } else {
+    return el.currentStyle;
   }
 }
 
