@@ -12,6 +12,7 @@ To use as a [component](https://github.com/component/component):
 API
 ---
 
+TODO: This is a work in progress.
 
 License
 -------
