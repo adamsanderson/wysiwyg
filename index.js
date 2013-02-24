@@ -40,7 +40,7 @@ var states = {
 
 function makeCommand(command, param){
   return function(userParam){
-    return document.execCommand(command, null, param || userParam);
+    return document.execCommand(command, false, param || userParam);
   }
 }
 

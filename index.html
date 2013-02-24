@@ -26,9 +26,11 @@
     <nav id='toolbar'>
       
     </nav>
-    <p id='content' contenteditable="true">This is a demo of the WYSIWYG commands.
-Select some of this text and try the commands out.
-    </p>
+    <div contenteditable="true" id='content'>
+      <p>This is a demo of the WYSIWYG commands.
+  Select some of this text and try the commands out.
+      </p>
+    </div>
     <footer>
       See the <a href='https://github.com/adamsanderson/wysiwyg/'>GitHub repository</a> for more information.
     </footer>
@@ -38,6 +40,7 @@ Select some of this text and try the commands out.
       var events  = require('component-event');
       
       var toolbar = document.getElementById('toolbar');
+      var content = document.getElementById('content');
       var ignore  = {html: true, img: true};
       
       for (var name in wysiwyg.commands){
@@ -49,10 +52,15 @@ Select some of this text and try the commands out.
       function makeCommandButton(name){
         var command = wysiwyg.commands[name];
         var button = document.createElement("button");
-        
-        button.innerText = name;
+        button.setAttribute("name", name);
+        if (button.textContent === ""){
+          button.textContent = name;
+        } else {
+          button.innerText = name;
+        }
         events.bind(button, "click", function(){
           wysiwyg.commands[name]();
+          content.focus();
         });
         
         return button;
