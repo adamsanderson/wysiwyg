@@ -11,6 +11,7 @@ var commands = {
   h3:         makeCommand("formatblock","h3"),
   h4:         makeCommand("formatblock","h4"),
   h5:         makeCommand("formatblock","h5"),
+  h6:         makeCommand("formatblock","h6"),
   p:          makeCommand("formatblock","p"),
   div:        makeCommand("formatblock","div"),
   blockquote: makeCommand("formatblock","blockquote"),
@@ -29,13 +30,27 @@ var commands = {
   html:       makeCommand("inserthtml")
 };
 
-var states = {
+var state = {
   bold:       makeQuery("bold"),
   italic:     makeQuery("italic"),
   strike:     makeQuery("strikethrough"),
   underline:  makeQuery("underline"),
   sub:        makeQuery("subscript"),
-  sup:        makeQuery("superscript")
+  sup:        makeQuery("superscript"),
+  
+  h1:         checkParent("h1"),
+  h2:         checkParent("h2"),
+  h3:         checkParent("h3"),
+  h4:         checkParent("h4"),
+  h5:         checkParent("h5"),
+  h6:         checkParent("h6"),
+  p:          checkParent("p"),
+  div:        checkParent("div"),
+  blockquote: checkParent("blockquote"),
+  
+  ol:         checkParent("ol"),
+  ul:         checkParent("ul"),
+  
 } 
 
 function makeCommand(command, param){
@@ -52,7 +67,53 @@ function makeQuery(command){
   }
 }
 
+function checkParent(name){
+  return function(){
+    var node, block;
+    
+    node = getRangeStartElement();
+    
+    if (node) {
+      block = getBlockParent(node);
+      return block && block.tagName.toLowerCase() === name;
+    }
+    
+  }
+}
+
+function getBlockParent(el){
+  var display = window.getComputedStyle(el).display;
+  if (display == "block" || display == "table"){
+    return el;
+  } else {
+    return getBlockParent(el.parentElement);
+  }
+}
+
+function getRangeStartElement(){
+  var selection;
+  var node;
+  
+  if (document.getSelection){
+    selection = document.getSelection();
+    if (!selection.rangeCount) return null;
+    
+    node = selection.getRangeAt(0).startContainer;
+    
+    if (node.nodeType == 1){
+      return node;
+    } else {
+      return node.parentElement;
+    }
+    
+  } else {
+    range = document.selection.createRange();
+    // TODO: this is required to support IE8.
+    return null;
+  }
+}
+
 module.exports = {
   commands: commands,
-  is: states
+  state: state
 };

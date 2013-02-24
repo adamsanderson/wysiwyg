@@ -19,6 +19,21 @@
         bottom: 20px;
         background: white;
       }
+      
+      button {
+        border: 1px solid #ccc;
+        background: #eee;
+        border-radius: 2px;
+        box-shadow: 1px 1px 2px #ddd;
+      }
+      
+      button:hover {
+        background: #ffe;
+      }
+      
+      button.active {
+        background: #fcffa2;
+      }
     </style>
   </head>
   <body>
@@ -27,8 +42,13 @@
       
     </nav>
     <div contenteditable="true" id='content'>
-      <p>This is a demo of the WYSIWYG commands.
-  Select some of this text and try the commands out.
+      <p>
+        This is a <i>demo</i> of the WYSIWYG commands.  
+        Select some of this text and try the commands out.
+      </p>
+      
+      <p>
+        <em><b>Note:</b> this is not a full editor.</em>  WYSIWYG provides tools for writing an html editor.
       </p>
     </div>
     <footer>
@@ -51,21 +71,38 @@
       
       function makeCommandButton(name){
         var command = wysiwyg.commands[name];
+        var checkState = wysiwyg.state[name];
         var button = document.createElement("button");
+        
         button.setAttribute("name", name);
         if (button.textContent === ""){
           button.textContent = name;
         } else {
           button.innerText = name;
         }
+        
         events.bind(button, "click", function(){
-          wysiwyg.commands[name]();
+          command();
           content.focus();
+          if (checkState) updateState();
         });
+        
+        if (checkState){
+          events.bind(content, "keyup", updateState);
+          events.bind(content, "mouseup", updateState);
+        }
+        
+        var timer = null;
+        var timeout = 100;
+        function updateState(){
+          clearTimeout(timer);
+          timer = setTimeout(function(){
+            button.setAttribute("class", checkState() ? "active" : "");
+          },timeout);
+        }
         
         return button;
       }
-      
     </script>
   </body>
 </html>
