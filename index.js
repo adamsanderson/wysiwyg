@@ -51,14 +51,13 @@ var state = {
   blockquote: checkParent("blockquote"),
   
   ol:         checkParent("ol"),
-  ul:         checkParent("ul"),
-  
-} 
+  ul:         checkParent("ul")  
+}; 
 
 function makeCommand(command, param){
   return function(userParam){
     return document.execCommand(command, false, param || userParam);
-  }
+  };
 }
 
 function makeQuery(command){
@@ -67,21 +66,19 @@ function makeQuery(command){
     // Webkit/Firefox return values are the strings: "true", "false", and ""
     // IE returns booleans
     return value === "true" || value === true;
-  }
+  };
 }
 
 function checkParent(name){
   return function(){
     var el, blockEl;
-    
     el = nearestElement(getRangeStartNode());
     
     if (el) {
       blockEl = getBlockElement(el);
       return blockEl && blockEl.tagName.toLowerCase() === name;
     }
-    
-  }
+  };
 }
 
 function getBlockElement(el){
