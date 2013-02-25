@@ -1,3 +1,5 @@
+var ELEMENT_NODE = document.ELEMENT_NODE;
+
 var commands = {
   bold:       makeCommand("bold"),
   italic:     makeCommand("italic"),
@@ -70,25 +72,31 @@ function makeQuery(command){
 
 function checkParent(name){
   return function(){
-    var node, block;
+    var el, blockEl;
     
-    node = getRangeStartElement();
+    el = nearestElement(getRangeStartNode());
     
-    if (node) {
-      block = getBlockParent(node);
-      return block && block.tagName.toLowerCase() === name;
+    if (el) {
+      blockEl = getBlockElement(el);
+      return blockEl && blockEl.tagName.toLowerCase() === name;
     }
     
   }
 }
 
-function getBlockParent(el){
-  var display = getStyle(el).display;
+function getBlockElement(el){
+  var style   = getStyle(el);
+  var display = style.display;
+  
   if (display == "block" || display == "table"){
     return el;
   } else {
-    return getBlockParent(el.parentElement);
+    return getBlockElement(el.parentElement);
   }
+}
+
+function nearestElement(node){
+  return node.nodeType == ELEMENT_NODE ? node : node.parentElement;
 }
 
 function getStyle(el){
@@ -99,7 +107,7 @@ function getStyle(el){
   }
 }
 
-function getRangeStartElement(){
+function getRangeStartNode(){
   var selection;
   var node;
   
@@ -114,11 +122,7 @@ function getRangeStartElement(){
     node = document.selection.createRange().parentElement();
   }
   
-  if (node.nodeType == 1){
-    return node;
-  } else {
-    return node.parentElement;
-  }
+  return node;
 }
 
 module.exports = {
