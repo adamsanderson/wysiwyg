@@ -3,6 +3,8 @@ WYSIWYG
 
 wysiwyg is a set of editor commands that can be used to build a full wysiwyg editor.
 
+Check the [demo](http://adamsanderson.github.com/wysiwyg/) to see these commands in action.
+
 Installation
 ------------
 To use as a [component](https://github.com/component/component):
