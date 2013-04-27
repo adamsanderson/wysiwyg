@@ -75,6 +75,8 @@ For the best results, wrap the content you want to edit in a `div`.  If you edit
 
 If possible, style the element being edited with `white-space: pre-wrap`.  This allows browsers to preserve white space while editing, and avoids some odd behavior around inserting &nbsp; all over the place.
 
+To work with the user's text caret, for instance to enable and disable commands, you may want to also use [caret](https://github.com/adamsanderson/caret).
+
 License
 -------
 
